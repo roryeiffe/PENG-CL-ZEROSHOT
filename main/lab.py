@@ -10,8 +10,8 @@ base_url = os.environ['OPENAI_API_BASE']
 deployment = os.environ['OPENAI_API_DEPLOYMENT']
 version = os.environ['OPENAI_API_VERSION']
 """
-This function will use the string defined below to form a system prompt. 
-Then, user input will be passed into the LLM to be
+The function written at the bottom of the file will use the string defined below to 
+form an initial system prompt. Then, user input will be passed into the LLM to be
 interpreted. In this case, it is expected for resources/prompt.txt to provide the LLM
 with instructions for classifying by sentiment (positive or negative.) This is usually
 in the context of categorizing human text such as online posts & product reviews

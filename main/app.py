@@ -9,5 +9,6 @@ def main():
     user_input = input("insert a prompt here for classification: ")
     output = classify(user_input)
     print(output)
+
 if __name__ == '__main__':
     main()
