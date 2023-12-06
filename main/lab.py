@@ -47,7 +47,6 @@ def classify(user_input):
                                  "content": f"{user_input}"}],
                         })
     message = str(res.json().get("choices")[0].get("message").get("content"))
-    print(message)
     if "positive" in message.lower():
         return "positive"
     elif "negative" in message.lower():
