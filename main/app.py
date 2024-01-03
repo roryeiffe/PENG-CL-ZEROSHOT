@@ -1,6 +1,5 @@
-import requests
-
 from main.lab import classify
+
 """
 This file will contain some sample code to send the output of the functions in lab.py to the 
 console. You may modify this file in any way, it will not affect the test results.
