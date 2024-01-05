@@ -1,14 +1,10 @@
 import os
-import requests
 
-"""
-All requests to the LLM require some form of a key.
-Other sensitive data has also been hidden through environment variables.
-"""
-api_key = os.environ['OPENAI_API_KEY']
-base_url = os.environ['OPENAI_API_BASE']
-deployment = os.environ['OPENAI_API_DEPLOYMENT']
-version = os.environ['OPENAI_API_VERSION']
+from langchain_community.chat_models import ChatHuggingFace
+from langchain_community.llms.huggingface_endpoint import HuggingFaceEndpoint
+from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
+
+
 """
 The function written at the bottom of the file will use the string defined below to 
 form an initial system prompt. Then, user input will be passed into the LLM to be
@@ -34,22 +30,26 @@ user input as needed.
 
 
 def classify(user_input):
-    res = requests.post(f"{base_url}/deployments/{deployment}/chat/completions?api-version={version}",
-                        headers={
-                            "Content-Type": "application/json",
-                            "api-key": f"{api_key}"
-                        },
-                        json={
-                            "messages": [
-                                {"role": "system",
-                                 "content": f"{prompt}"},
-                                {"role": "user",
-                                 "content": f"{user_input}"}],
-                        })
-    message = str(res.json().get("choices")[0].get("message").get("content"))
-    if "positive" in message.lower():
+
+    llm = HuggingFaceEndpoint(
+        endpoint_url=os.environ['LLM_ENDPOINT'],
+        task="text2text-generation",
+        model_kwargs={
+            "max_new_tokens": 200
+        }
+    )
+    chat_model = ChatHuggingFace(llm=llm)
+    messages = ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template(prompt),
+        HumanMessagePromptTemplate.from_template("{message}")
+    ])
+
+    chain = messages | chat_model
+    result = chain.invoke({"message": user_input}).content
+
+    if "positive" in result.lower():
         return "positive"
-    elif "negative" in message.lower():
+    elif "negative" in result.lower():
         return "negative"
     else:
         return "user input was not properly classified"

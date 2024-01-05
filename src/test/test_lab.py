@@ -4,12 +4,31 @@ solution in main/lab.py. You should not modify the code in this file. You should
 also manually test your solution by running main/app.py.
 """
 import unittest
-import requests
+from langchain_core.outputs import LLMResult
 
-from main.lab import classify
+from src.main.lab import classify
+from src.utilities.llm_testing_util import llm_connection_check, llm_wakeup
 
 
 class TestLLMResponse(unittest.TestCase):
+    """
+        This function is a sanity check for the Language Learning Model (LLM) connection.
+        It attempts to generate a response from the LLM. If a 'Bad Gateway' error is encountered,
+        it initiates the LLM wake-up process. This function is critical for ensuring the LLM is
+        operational before running tests and should not be modified without understanding the
+        implications.
+        Raises:
+            Exception: If any error other than 'Bad Gateway' is encountered, it is raised to the caller.
+        """
+
+    def test_llm_sanity_check(self):
+        try:
+            response = llm_connection_check()
+            self.assertIsInstance(response, LLMResult)
+        except Exception as e:
+            if 'Bad Gateway' in str(e):
+                llm_wakeup()
+                self.fail("LLM is not awake. Please try again in 3-5 minutes.")
 
     """
     Your prompt should make the LLM correctly classify positive responses.
