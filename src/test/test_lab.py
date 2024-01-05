@@ -6,8 +6,8 @@ also manually test your solution by running main/app.py.
 import unittest
 from langchain_core.outputs import LLMResult
 
-from main.lab import classify
-from utilities.llm_testing_util import llm_connection_check, llm_wakeup, classify_relevancy
+from src.main.lab import classify
+from src.utilities.llm_testing_util import llm_connection_check, llm_wakeup
 
 
 class TestLLMResponse(unittest.TestCase):

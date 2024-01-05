@@ -1,4 +1,4 @@
-from main.lab import classify
+from src.main.lab import classify
 
 """
 This file will contain some sample code to send the output of the functions in lab.py to the 
