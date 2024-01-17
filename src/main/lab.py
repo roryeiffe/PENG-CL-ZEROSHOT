@@ -21,7 +21,7 @@ without the need for any shown examples, this is considered a zero-shot problem.
 """
 TODO: Change the prompt below to allow for classification as described above.
 """
-prompt = ""
+prompt = "Classify the input using only one word, either 'positive' or 'negative'"
 
 """
 There is no need to change the below function. It will properly use the prompt &
